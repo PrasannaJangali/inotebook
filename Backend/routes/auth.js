@@ -9,7 +9,7 @@ const { body, validationResult } = require('express-validator');
 
 //using jsonwebtoken to authenticate user
 var jwt = require('jsonwebtoken');
-
+const JWT_SECRET='white';
 //using bcrypt to secure password;
 const bcrypt = require('bcrypt');
 
@@ -43,7 +43,7 @@ body('Password',).isLength({min:5}),
     const salt= await bcrypt.genSalt(10);
     const Secpass=await bcrypt.hash(req.body.Password,salt);
     //if email is unique then object is created and add to database
-    await users.create({
+    const b=await users.create({
         Name: req.body.Name,
         Email:req.body.Email,
         Password: Secpass,
@@ -51,13 +51,13 @@ body('Password',).isLength({min:5}),
     
       const data={
           user:{
-              id:users.id
+              id:b.id
           }
       }
-      JWT_SECRET='white';
+      
       const jwtdata= jwt.sign(data,JWT_SECRET);
-      console.log(jwtdata);
-      res.json(req.body)
+      success=true;
+      res.json({success,authtoken:jwtdata});
 
     } 
     catch (error) {
@@ -75,7 +75,7 @@ async (req,res)=>{
 // if there are errors return bad request
 const a=validationResult(req);
 if(!a.isEmpty()){
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json({ errors: "invalid user" });
 }
 try {
     const email=req.body.Email;
@@ -88,17 +88,18 @@ try {
         }
         const data={
             user:{
-                id:users.id
+                id:user.id
             }
         }
-        JWT_SECRET='white';
         const jwtdata=jwt.sign(data,JWT_SECRET);
-        res.json(jwtdata);
+        const success=true;
+        res.json({success,authtoken:jwtdata});
 
     }else{
         return res.status(400).json({errors:"Please login with correct credentials"});
     }
-} catch (error) {
+}
+catch (error) {
     res.status(500).json({error:"Internal server error occured"})
     console.log(error);
 }
@@ -110,7 +111,7 @@ router.post('/getuser',fetchUser,async (req,res)=>{
     try {
         const userId=req.user.id;
         const user=await users.findById(userId).select("-Password");
-        res.send(user);
+        res.json(user);
     } catch (error) {
         res.status(500).json({error:"Internal server error occured"})
         console.log(error);

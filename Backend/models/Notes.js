@@ -1,10 +1,7 @@
 const mongoose=require('mongoose');
 
 const noteschema=mongoose.Schema({
-    user:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'users'
-    },
+    
     title:{
         type:String,
     },
@@ -14,6 +11,10 @@ const noteschema=mongoose.Schema({
     tag:{
        type: String,
        default:"General",
+    },
+    user:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'users'
     },
     date:{
         type:Date,

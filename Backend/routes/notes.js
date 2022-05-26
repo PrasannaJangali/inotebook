@@ -5,14 +5,14 @@ const router=express.Router();
 const { body, validationResult } = require('express-validator');
 
 //import Notes schema
-const notes=require('../models/Notes');
+const Notes=require('../models/Notes');
 const fetchUser = require('../middleware/fetchUser');
-const { route } = require('./auth');
+// const { route } = require('./auth');
 
 //Route:1 get logged in user notes
 router.get('/fetchuserdata',fetchUser,async (req,res)=>{
     try {
-        const note=await notes.find({user:req.user.id});
+        const note=await Notes.find({user:req.user.id});
         res.json(note);
     } catch (error) {
         console.log(error);
@@ -32,9 +32,7 @@ body('description').isString()
     }
     try {
         const {title,description,tag}=req.body;
-       const note=await notes.create({
-           title,description,tag,user:req.user.id
-       })
+       const note=await Notes.create({title,description,tag,user:req.user.id});
        const savednote=await note.save();
        res.json(savednote);
         
@@ -53,13 +51,13 @@ router.put('/updatenote/:id',fetchUser,async(req,res)=>{
    if(title)newnote.title=title;
    if(description)newnote.description=description;
    if(tag) newnote.tag=tag;
-    const note=await notes.findById(req.params.id);
+    const note=await Notes.findById(req.params.id);
     if(!note){
         return res.status(404).send("Not Found");
     }
     
     if(note.user.toString()===req.user.id){
-        const update=await notes.findByIdAndUpdate(req.params.id,{$set : newnote},{new:true});
+        const update=await Notes.findByIdAndUpdate(req.params.id,{$set : newnote},{new:true});
         res.json(update);
     }else{
         res.status(401).json({error:"Access denied"});
@@ -73,12 +71,12 @@ router.put('/updatenote/:id',fetchUser,async(req,res)=>{
 //Route:4 to delete a note by logged in user. Log in required
 router.delete('/deletenote/:id',fetchUser,async(req,res)=>{
     try {
-        const note=await notes.findById(req.params.id);
+        const note=await Notes.findById(req.params.id);
         if(!note){
             return res.status(404).send("Not Found");
         }
         if(note.user.toString()===req.user.id){
-            const deleted=await notes.findByIdAndDelete(req.params.id);
+            const deleted=await Notes.findByIdAndDelete(req.params.id);
             return res.status(200).json(deleted);
         }
         else{
