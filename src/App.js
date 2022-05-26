@@ -12,6 +12,7 @@ import {
 } from 'react-router-dom';
 import Signup from './Components/Signup';
 import Alert from './Components/Alert';
+import Welcome from './Components/Welcome';
 function App() {
   const [alert, setalert] = useState(null);
   const showalert=(msg,type)=>{
@@ -32,7 +33,8 @@ function App() {
           <Alert alert={alert}/>
           <div className="container">
           <Routes >
-            <Route exact path="/" element={<Home showalert={showalert} />}></Route>
+            <Route exact path="/" element={<Welcome />}></Route>
+            <Route exact path="/home" element={<Home showalert={showalert} />}></Route>
             <Route exact path="/about" element={<About />}></Route>
             <Route exact path="/login" element={<Login showalert={showalert}/>}></Route>
             <Route exact path="/signup" element={<Signup showalert={showalert} />}></Route>

@@ -5,7 +5,6 @@ import notecontex from '../Context/Notes/notescontext';
 function Login(props) {
     const navigate=useNavigate();
     const context = useContext(notecontex);
-    const {fetchnotes}=context;
     const a1='http://localhost:5000/api';
     const loginuser=async(e)=>{
         e.preventDefault();
@@ -24,7 +23,7 @@ function Login(props) {
               localStorage.setItem('token',json.authtoken);
               console.log(json.authtoken);
               props.showalert('Loggedin Successfully Successfully','success');
-              navigate('/');
+              navigate('/home');
           }
           else{
               props.showalert("Error : Invalid Details","danger");

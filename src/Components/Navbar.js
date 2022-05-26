@@ -11,9 +11,9 @@ function Navbar() {
        Navigate('/login');
     }
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light" >
             <div className="container-fluid">
-                <h3 className='nav-brand'>iNotebook</h3>
+                <img style={{height: '80px'}} src="https://i.pinimg.com/736x/95/3d/c7/953dc75f5da48a0366342d669504a887--notebooks-for-sale.jpg" alt="Responsive image"/>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -21,6 +21,9 @@ function Navbar() {
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
                             <Link className={`nav-link ${location.pathname==='/'?'active':''}`}   aria-current="page" to="/">Home</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className={`nav-link ${location.pathname==='/notes'?'active':''}`} to="/home">Notes</Link>
                         </li>
                         <li className="nav-item">
                             <Link className={`nav-link ${location.pathname==='/about'?'active':''}`} to="/about">About</Link>

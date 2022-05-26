@@ -19,7 +19,7 @@ function Signup(props) {
             console.log(json.authtoken);
             if(json.success){
                 localStorage.setItem('token',json.authtoken);
-                Navigate('/');
+                Navigate('/home');
                 props.showalert('Accout Created Successfully','success');
             }
             a.value=b.value=c.value="";
