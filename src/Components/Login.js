@@ -5,6 +5,7 @@ import notecontex from '../Context/Notes/notescontext';
 function Login(props) {
     const navigate=useNavigate();
     const context = useContext(notecontex);
+    const {getuser}=context;
     const a1='http://localhost:5000/api';
     const loginuser=async(e)=>{
         e.preventDefault();
@@ -21,7 +22,7 @@ function Login(props) {
           if(json.success)
           {
               localStorage.setItem('token',json.authtoken);
-              console.log(json.authtoken);
+              getuser();
               props.showalert('Loggedin Successfully Successfully','success');
               navigate('/home');
           }
@@ -33,7 +34,7 @@ function Login(props) {
     }
     return (
         <div>
-            <h3>Please Login to use iNotebook</h3>
+            <h3>Please Login to Access your notes in iNotebook</h3>
             <form className='container' onSubmit={loginuser}>
                 <div className="form-group my-3">
                     <label className='my-1' htmlFor="Email">Email address</label>

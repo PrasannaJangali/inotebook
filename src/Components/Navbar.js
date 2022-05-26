@@ -1,13 +1,17 @@
-import React from 'react'
+import React ,{useContext} from 'react'
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
     Link
 } from 'react-router-dom';
+import notecontex from '../Context/Notes/notescontext';
 function Navbar() {
+    const context=useContext(notecontex);
+    const {user,setuser}=context;
     let location = useLocation();
     const Navigate=useNavigate();
     const logout=()=>{
        localStorage.removeItem('token');
+       setuser(null);
        Navigate('/login');
     }
     return (
@@ -23,13 +27,16 @@ function Navbar() {
                             <Link className={`nav-link ${location.pathname==='/'?'active':''}`}   aria-current="page" to="/">Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className={`nav-link ${location.pathname==='/notes'?'active':''}`} to="/home">Notes</Link>
+                            <Link className={`nav-link ${location.pathname==='/login'?'active':''}`} to="/home">Notes</Link>
                         </li>
                         <li className="nav-item">
                             <Link className={`nav-link ${location.pathname==='/about'?'active':''}`} to="/about">About</Link>
                         </li>
                     </ul>
-                </div>            
+                </div> 
+                {localStorage.getItem('token') && <div >
+                   <button className="btn btn-info mx-2">{ user}</button>
+                </div>}
                 <Link type="button" style={{display:(localStorage.getItem('token')||location.pathname==='/login') ?'none':'block'}} to="/login" className="btn btn-info mx-2">Login</Link>               
                 <button type="button" style={{display:localStorage.getItem('token')?'block':'none'}} onClick={logout} to="/" className="btn btn-info mx-2">Log Out</button>               
                 <Link type="button" style={{display:(localStorage.getItem('token')||location.pathname==='/signup')?'none':'block'}}to="/signup" className="btn btn-info">Sign-Up</Link>
